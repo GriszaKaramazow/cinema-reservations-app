@@ -51,6 +51,7 @@ public class SessionControllerTest {
     }
 
     @Order(2)
+    @ParameterizedTest
     @CsvFileSource(resources = "/session/addSession.csv", delimiter = ';')
     public void addSession(String request, String response) throws Exception {
         mockMvc.perform(post("/session")
@@ -70,7 +71,6 @@ public class SessionControllerTest {
                 .content(request)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
                 .andExpect(status().isOk())
                 .andExpect(content().json(response))
                 .andDo(print());
