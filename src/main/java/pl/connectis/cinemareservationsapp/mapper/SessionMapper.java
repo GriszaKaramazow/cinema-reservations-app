@@ -35,6 +35,9 @@ public class SessionMapper {
 
     public Session mapEntityFromDTO(SessionDTO sessionDTO) {
         Session session = new Session();
+        if (sessionDTO.getId() != null) {
+            session.setId(sessionDTO.getId());
+        }
         if (sessionDTO.getMovieId() != null) {
             Movie movie = new Movie();
             movie.setId(sessionDTO.getMovieId());
