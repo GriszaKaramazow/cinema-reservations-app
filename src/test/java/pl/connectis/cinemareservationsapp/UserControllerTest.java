@@ -53,10 +53,9 @@ public class UserControllerTest {
 
     @Order(2)
     @ParameterizedTest
-    @WithMockUser("filip.chmielewski@poczta.pl")
-    @CsvFileSource(resources = "/user/getClient.csv", delimiter = ';')
-    public void getClient(String response) throws Exception {
-        mockMvc.perform(get("/myaccount")
+    @CsvFileSource(resources = "/user/getClientByLastName.csv", delimiter = ';')
+    public void getClientByLastName(String lastName, String response) throws Exception {
+        mockMvc.perform(get("/client?lastName={lastName}", lastName)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(response))
@@ -64,6 +63,30 @@ public class UserControllerTest {
     }
 
     @Order(3)
+    @ParameterizedTest
+    @WithMockUser("filip.chmielewski@poczta.pl")
+    @CsvFileSource(resources = "/user/getLoggedClient.csv", delimiter = ';')
+    public void getLoggedClient(String response) throws Exception {
+        mockMvc.perform(get("/myaccount")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(response))
+                .andDo(print());
+    }
+
+    @Order(4)
+    @ParameterizedTest
+    @WithMockUser("piotr.krakowski@kino.pl")
+    @CsvFileSource(resources = "/user/getLoggedEmployee.csv", delimiter = ';')
+    public void getLoggedEmployee(String response) throws Exception {
+        mockMvc.perform(get("/myaccount")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(response))
+                .andDo(print());
+    }
+
+    @Order(5)
     @ParameterizedTest
     @CsvFileSource(resources = "/user/addClient.csv", delimiter = ';')
     public void addClient(String request, String response) throws Exception {
@@ -76,7 +99,7 @@ public class UserControllerTest {
                 .andDo(print());
     }
 
-    @Order(4)
+    @Order(6)
     @ParameterizedTest
     @WithMockUser("piotr.krakowski@kino.pl")
     @CsvFileSource(resources = "/user/addEmployee.csv", delimiter = ';')
@@ -94,14 +117,54 @@ public class UserControllerTest {
     @Order(5)
     @ParameterizedTest
     @WithMockUser("filip.chmielewski@poczta.pl")
-    @CsvFileSource(resources = "/user/updateUser.csv", delimiter = ';')
-    public void updateUser(String request, String response) throws Exception {
+    @CsvFileSource(resources = "/user/updateClient.csv", delimiter = ';')
+    public void updateClient(String request, String response) throws Exception {
         mockMvc.perform(put("/myaccount")
                 .content(request)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(response))
+                .andDo(print());
+    }
+
+    @Order(6)
+    @ParameterizedTest
+    @WithMockUser("filip.chmielewski@poczta.pl")
+    @CsvFileSource(resources = "/user/updateClientInappropriateUsername.csv", delimiter = ';')
+    public void updateClientInappropriateUsername(String request) throws Exception {
+        mockMvc.perform(put("/myaccount")
+                .content(request)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Order(7)
+    @ParameterizedTest
+    @WithMockUser("piotr.krakowski@kino.pl")
+    @CsvFileSource(resources = "/user/updateEmployee.csv", delimiter = ';')
+    public void updateEmployee(String request, String response) throws Exception {
+        mockMvc.perform(put("/myaccount")
+                .content(request)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(response))
+                .andDo(print());
+    }
+
+    @Order(8)
+    @ParameterizedTest
+    @WithMockUser("piotr.krakowski@kino.pl")
+    @CsvFileSource(resources = "/user/updateEmployeeInappropriateUsername.csv", delimiter = ';')
+    public void updateEmployeeInappropriateUsername(String request) throws Exception {
+        mockMvc.perform(put("/myaccount")
+                .content(request)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 
