@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "81bce7b9-ee4d-41cc-b290-3db8d862b09b",
+		"_postman_id": "299c7300-4d83-4c9a-b381-1b790945c20d",
 		"name": "CinemaReservationApp",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -423,7 +423,7 @@
 					"response": []
 				},
 				{
-					"name": "/movie?id=2 [403]",
+					"name": "/movie?id=6 [403]",
 					"event": [
 						{
 							"listen": "test",
@@ -442,7 +442,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/movie?id=2",
+							"raw": "localhost:8080/movie?id=6",
 							"host": [
 								"localhost"
 							],
@@ -453,7 +453,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "6"
 								}
 							]
 						}
@@ -1257,7 +1257,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"filip.chmielewski@mail.com\",\r\n    \"password\": null,\r\n    \"encodedPassword\": null,\r\n    \"firstName\": \"Filip\",\r\n    \"lastName\": \"Chmielewski\",\r\n    \"birthDate\": \"1921-08-08\"\r\n}",
+							"raw": "{\r\n    \"username\": \"filip.chmielewski@mail.com\",\r\n    \"firstName\": \"Filip\",\r\n    \"lastName\": \"Chmielewski\",\r\n    \"birthDate\": \"1921-08-08\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1317,7 +1317,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"filip.chmielewski@poczta.pl\",\r\n    \"password\": null,\r\n    \"encodedPassword\": null,\r\n    \"firstName\": \"Filip\",\r\n    \"lastName\": \"Chmielewski\",\r\n    \"birthDate\": \"1996-10-10\"\r\n}",
+							"raw": "{\r\n    \"username\": \"filip.chmielewski@poczta.pl\",\r\n    \"firstName\": \"Filip\",\r\n    \"lastName\": \"Chmielewski\",\r\n    \"birthDate\": \"1996-10-10\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2848,7 +2848,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin@cinema.pl\",\r\n    \"password\": null,\r\n    \"encodedPassword\": null,\r\n    \"firstName\": \"Piotr\",\r\n    \"lastName\": \"Krakowski\",\r\n\t\"birthDate\": \"1980-02-20\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin@cinema.pl\",\r\n    \"firstName\": \"Piotr\",\r\n    \"lastName\": \"Krakowski\",\r\n\t\"birthDate\": \"1980-02-20\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2912,7 +2912,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"piotr.krakowski@kino.pl\",\r\n    \"password\": null,\r\n    \"encodedPassword\": null,\r\n    \"firstName\": \"Piotr\",\r\n    \"lastName\": \"Krakowski\",    \r\n    \"birthDate\": \"1986-06-09\"\r\n}",
+							"raw": "{\r\n    \"username\": \"piotr.krakowski@kino.pl\",\r\n    \"firstName\": \"Piotr\",\r\n    \"lastName\": \"Krakowski\",    \r\n    \"birthDate\": \"1986-06-09\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4408,7 +4408,7 @@
 									"});\r",
 									"pm.test(\"Appropriate message\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.message).to.eql(\"room {id=5} was not found\");\r",
+									"    pm.expect(jsonData.message).to.eql(\"movie {id=7} was not found\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -4427,7 +4427,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 3,\n    \"movieId\": 1,\n    \"roomId\": 5,\n    \"startDate\": \"2020-07-02\",\n    \"startTime\": \"17:00:00\",\n    \"ticketPrice\": 14.99\n}"
+							"raw": "{\n    \"id\": 3,\n    \"movieId\": 7,\n    \"roomId\": 4,\n    \"startDate\": \"2020-07-02\",\n    \"startTime\": \"17:00:00\",\n    \"ticketPrice\": 14.99\n}"
 						},
 						"url": {
 							"raw": "{{url}}/session",
@@ -4454,7 +4454,7 @@
 									"});\r",
 									"pm.test(\"Appropriate message\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.message).to.eql(\"movie {id=7} was not found\");\r",
+									"    pm.expect(jsonData.message).to.eql(\"room {id=5} was not found\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -4473,7 +4473,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 3,\n    \"movieId\": 7,\n    \"roomId\": 4,\n    \"startDate\": \"2020-07-02\",\n    \"startTime\": \"17:00:00\",\n    \"ticketPrice\": 14.99\n}"
+							"raw": "{\n    \"id\": 3,\n    \"movieId\": 1,\n    \"roomId\": 5,\n    \"startDate\": \"2020-07-02\",\n    \"startTime\": \"17:00:00\",\n    \"ticketPrice\": 14.99\n}"
 						},
 						"url": {
 							"raw": "{{url}}/session",
@@ -4517,6 +4517,47 @@
 							],
 							"path": [
 								"ticket"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ticket?session=1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "47d4671f-c360-4924-ae35-75ffd570ab1f",
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Fifteen tickets on the list\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(Object.keys(pm.response.json()).length).to.eql(5);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ticket?session=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ticket"
+							],
+							"query": [
+								{
+									"key": "session",
+									"value": "1"
+								}
 							]
 						}
 					},

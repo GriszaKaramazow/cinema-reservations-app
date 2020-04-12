@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Properties;
@@ -20,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
@@ -65,12 +65,36 @@ public class TicketControllerTest {
 
     @Order(3)
     @ParameterizedTest
+    @WithMockUser("filip.chmielewski@poczta.pl")
+    @CsvFileSource(resources = "/ticket/getMyTickets.csv", delimiter = ';')
+    public void getMyTickets(String response) throws Exception {
+        mockMvc.perform(get("/mytickets")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(response))
+                .andDo(print());
+    }
+
+    @Order(4)
+    @ParameterizedTest
     @CsvFileSource(resources = "/ticket/deleteTicket.csv", delimiter = ';')
     public void deleteTicket(long id) throws Exception {
         mockMvc.perform(delete("/ticket/?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
+    @Order(5)
+    @ParameterizedTest
+    @CsvFileSource(resources = "/ticket/deleteTicketDoesntExist.csv", delimiter = ';')
+    public void deleteTicketDoesntExist(long id) throws Exception {
+        mockMvc.perform(delete("/ticket/?id={id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
     }
 
 }
