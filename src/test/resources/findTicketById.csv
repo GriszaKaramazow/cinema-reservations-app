@@ -1,1 +1,0 @@
-1;{"id":1,"price":112.50,"seatNumber":10,"rowNumber":12,"user":{"id":1,"firstName":"Termos","lastName":"Termiszewski","age":30,"email":"termos@cinema.pl"},"session":{"id":1,"startTime":"2020-02-20T21:03:51.325","startDate":"2020-02-20"},"movie":{"id":1,"title":"test","category":"test","length":142,"description":"test","ageLimit":10},"room":{"id":1,"capacity":10,"layout":[5,5]}}

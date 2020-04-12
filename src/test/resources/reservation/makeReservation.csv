@@ -1,0 +1,1 @@
+{"sessionId":6,"reservedSeats":[{"rowNumber":4,"seatNumber":5,"sold":false},{"rowNumber":4,"seatNumber":6,"sold":false}]};[{"id":16,"sessionId":6,"client":"filip.chmielewski@poczta.pl","seat":{"rowNumber":4,"seatNumber":5,"sold":true}},{"id":17,"sessionId":6,"client":"filip.chmielewski@poczta.pl","seat":{"rowNumber":4,"seatNumber":6,"sold":true}}]
