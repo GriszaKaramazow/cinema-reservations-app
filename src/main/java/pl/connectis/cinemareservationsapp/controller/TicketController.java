@@ -19,12 +19,12 @@ public class TicketController {
     }
 
     @GetMapping("/mytickets")
-    public List<TicketDTO> getTicketById(@RequestParam Map<String, String> requestParam) {
+    public List<TicketDTO> getTicketByUsername(@RequestParam Map<String, String> requestParam) {
         return ticketService.getMyTicketsByExample(requestParam);
     }
 
     @GetMapping("/ticket")
-    public List<TicketDTO> getTicketsByExample(@RequestParam Map<String, String> requestParams) {
+    public List<TicketDTO> getTicketByExample(@RequestParam Map<String, String> requestParams) {
         return ticketService.getTicketsByExample(requestParams);
     }
 
