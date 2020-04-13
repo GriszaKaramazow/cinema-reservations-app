@@ -45,7 +45,7 @@ public class TicketControllerTest {
 
     @Order(1)
     @Test
-    public void getTicketByExampleAll_Unauthenticated() throws Exception {
+    public void getTicketsByExample_GetAll_Unauthenticated() throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -55,7 +55,7 @@ public class TicketControllerTest {
     @Order(2)
     @Test
     @WithMockUser(roles = "CLIENT")
-    public void getTicketByExampleAll_AuthenticatedAsClient() throws Exception {
+    public void getTicketsByExample_GetAll_AuthenticatedAsClient() throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -65,24 +65,26 @@ public class TicketControllerTest {
     @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/ticket/getTicketByExampleAll.csv", delimiter = ';')
-    public void getTicketByExampleAll_AuthenticatedAsEmployee(String response) throws Exception {
+    @CsvFileSource(resources = "/ticket/getTicketsByExample_GetAll.csv", delimiter = ';')
+    public void getTicketsByExample_GetAll_AuthenticatedAsEmployee(String responseBody) throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/ticket/getTicketByExampleSession.csv", delimiter = ';')
-    public void getTicketByExampleSession_AuthenticatedAsEmployee(long sessionId, String response) throws Exception {
+    @CsvFileSource(resources = "/ticket/getTicketByExample_GetBySession.csv", delimiter = ';')
+    public void getTicketsByExample_GetBySession_AuthenticatedAsEmployee(long sessionId, String responseBody) throws Exception {
         mockMvc.perform(get("/ticket?session={sessionId}", sessionId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
@@ -99,11 +101,12 @@ public class TicketControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/ticket/getMyTickets.csv", delimiter = ';')
-    public void getMyTickets_AuthenticatedAsClient(String response) throws Exception {
+    public void getMyTickets_AuthenticatedAsClient(String responseBody) throws Exception {
         mockMvc.perform(get("/mytickets")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
@@ -145,7 +148,7 @@ public class TicketControllerTest {
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/ticket/deleteTicket.csv", delimiter = ';')
     public void deleteTicket_AuthenticatedAsEmployee(long id) throws Exception {
-        mockMvc.perform(delete("/ticket/?id={id}", id)
+        mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
@@ -157,7 +160,7 @@ public class TicketControllerTest {
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/ticket/deleteTicketDoesntExist.csv", delimiter = ';')
     public void deleteTicketDoesntExist_AuthenticatedAsEmployee(long id) throws Exception {
-        mockMvc.perform(delete("/ticket/?id={id}", id)
+        mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())

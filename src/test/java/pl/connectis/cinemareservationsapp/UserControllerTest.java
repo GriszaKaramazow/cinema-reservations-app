@@ -44,8 +44,7 @@ public class UserControllerTest {
 
     @Order(1)
     @Test
-    @CsvFileSource(resources = "/user/getClientByExampleAll.csv", delimiter = ';')
-    public void getClientByExampleAll_Unauthenticated() throws Exception {
+    public void getClientsByExample_GetAll_Unauthenticated() throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -55,8 +54,7 @@ public class UserControllerTest {
     @Order(2)
     @Test
     @WithMockUser(roles = "CLIENT")
-    @CsvFileSource(resources = "/user/getClientByExampleAll.csv", delimiter = ';')
-    public void getClientAll_AuthenticatedAsClient() throws Exception {
+    public void getClientsByExample_GetAll_AuthenticatedAsClient() throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -66,30 +64,31 @@ public class UserControllerTest {
     @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/user/getClientByExampleAll.csv", delimiter = ';')
-    public void getClientAll_AuthenticatedAsEmployee(String response) throws Exception {
+    @CsvFileSource(resources = "/user/getClientsByExampleGetAll.csv", delimiter = ';')
+    public void getClientsByExample_GetAll_AuthenticatedAsEmployee(String responseBody) throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/user/getClientByLastName.csv", delimiter = ';')
-    public void getClientByLastName_AuthenticatedAsEmployee(String lastName, String response) throws Exception {
+    @CsvFileSource(resources = "/user/getClientsByExample_GetByLastName.csv", delimiter = ';')
+    public void getClientsByExample_GetByLastName_AuthenticatedAsEmployee(String lastName, String responseBody) throws Exception {
         mockMvc.perform(get("/client?lastName={lastName}", lastName)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(5)
     @Test
-    @CsvFileSource(resources = "/user/getLoggedClient.csv", delimiter = ';')
     public void getLoggedUser_Unauthenticated() throws Exception {
         mockMvc.perform(get("/myaccount")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -100,46 +99,49 @@ public class UserControllerTest {
     @Order(6)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/user/getLoggedClient.csv", delimiter = ';')
-    public void getLoggedUser_AuthenticatedAsClient(String response) throws Exception {
+    @CsvFileSource(resources = "/user/getLoggedUser_getClient", delimiter = ';')
+    public void getLoggedUser_getClient_AuthenticatedAsClient(String responseBody) throws Exception {
         mockMvc.perform(get("/myaccount")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(7)
     @ParameterizedTest
     @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/user/getLoggedEmployee.csv", delimiter = ';')
-    public void getLoggedUser_AuthenticatedAsEmployee(String response) throws Exception {
+    @CsvFileSource(resources = "/user/getLoggedUser_GetEmployee", delimiter = ';')
+    public void getLoggedUser_GetEmployee_AuthenticatedAsEmployee(String responseBody) throws Exception {
         mockMvc.perform(get("/myaccount")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(8)
     @ParameterizedTest
     @CsvFileSource(resources = "/user/addClient.csv", delimiter = ';')
-    public void addClient_Unauthenticated(String request, String response) throws Exception {
+    public void addClient_Unauthenticated(String requestBody, String responseBody) throws Exception {
         mockMvc.perform(post("/signup")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(9)
     @ParameterizedTest
     @CsvFileSource(resources = "/user/addEmployee.csv", delimiter = ';')
-    public void addEmployee_Unauthenticated(String request) throws Exception {
+    public void addEmployee_Unauthenticated(String requestBody) throws Exception {
         mockMvc.perform(post("/register")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -150,9 +152,9 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/user/addEmployee.csv", delimiter = ';')
-    public void addEmployee_AuthenticatedAsClient(String request) throws Exception {
+    public void addEmployee_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(post("/register")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -163,22 +165,23 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/user/addEmployee.csv", delimiter = ';')
-    public void addEmployee(String request, String response) throws Exception {
+    public void addEmployee(String requestBody, String responseBody) throws Exception {
         mockMvc.perform(post("/register")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(12)
     @ParameterizedTest
-    @CsvFileSource(resources = "/user/updateClient.csv", delimiter = ';')
-    public void updateUser(String request) throws Exception {
+    @CsvFileSource(resources = "/user/updateUser_UpdateClient.csv", delimiter = ';')
+    public void updateUser_UpdateClient_Unauthenticated(String requestBody) throws Exception {
         mockMvc.perform(put("/myaccount")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -188,38 +191,40 @@ public class UserControllerTest {
     @Order(13)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/user/updateClient.csv", delimiter = ';')
-    public void updateClient(String request, String response) throws Exception {
+    @CsvFileSource(resources = "/user/updateUser_UpdateClient.csv", delimiter = ';')
+    public void updateUser_UpdateClient_AuthenticatedAsClient(String requestBody, String responseBody) throws Exception {
         mockMvc.perform(put("/myaccount")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(14)
     @ParameterizedTest
     @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/user/updateEmployee.csv", delimiter = ';')
-    public void updateEmployee(String request, String response) throws Exception {
+    @CsvFileSource(resources = "/user/updateUser_UpdateEmployee.csv", delimiter = ';')
+    public void updateUser_UpdateEmployee_AuthenticatedAsEmployee(String requestBody, String responseBody) throws Exception {
         mockMvc.perform(put("/myaccount")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
     @Order(16)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/user/updateClientInappropriateUsername.csv", delimiter = ';')
-    public void updateClientInappropriateUsername(String request) throws Exception {
+    @CsvFileSource(resources = "/user/updateUser_InappropriateUsername.csv", delimiter = ';')
+    public void updateUser_InappropriateUsername_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(put("/myaccount")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())

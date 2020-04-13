@@ -44,7 +44,7 @@ public class RoomControllerTest {
 
     @Order(1)
     @Test
-    public void getRoomsByExampleAll_Unauthenticated() throws Exception {
+    public void getRoomsByExample_GetAll_Unauthenticated() throws Exception {
         mockMvc.perform(get("/room")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -54,7 +54,7 @@ public class RoomControllerTest {
     @Order(2)
     @Test
     @WithMockUser(roles = "CLIENT")
-    public void getRoomsByExampleAll_AuthenticatedAsClient() throws Exception {
+    public void getRoomsByExample_GetAll_AuthenticatedAsClient() throws Exception {
         mockMvc.perform(get("/room")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -64,8 +64,8 @@ public class RoomControllerTest {
     @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/getRoomsByExampleAll.csv", delimiter = ';')
-    public void getRoomsByExampleAll_AuthenticatedAsEmployee(String responseBody) throws Exception {
+    @CsvFileSource(resources = "/room/getRoomsByExample_GetAll.csv", delimiter = ';')
+    public void getRoomsByExample_GetAll_AuthenticatedAsEmployee(String responseBody) throws Exception {
         mockMvc.perform(get("/room")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -77,8 +77,8 @@ public class RoomControllerTest {
     @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/getRoomByCapacity.csv", delimiter = ';')
-    public void getRoomsByExampleCapacity_AuthenticatedAsEmployee(int capacity, String responseBody) throws Exception {
+    @CsvFileSource(resources = "/room/getRoomBy_GetByCapacity.csv", delimiter = ';')
+    public void getRoomsByExample_GetByCapacity_AuthenticatedAsEmployee(int capacity, String responseBody) throws Exception {
         mockMvc.perform(get("/room?capacity={capacity}", capacity)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -131,8 +131,8 @@ public class RoomControllerTest {
     @Order(8)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/addRoomWrongCapacity.csv", delimiter = ';')
-    public void addRoomWrongCapacity_AuthenticatedAsEmployee(String requestBody) throws Exception {
+    @CsvFileSource(resources = "/room/addRoom_CapacityDoesntMeetLayout.csv", delimiter = ';')
+    public void addRoom_CapacityDoesntMeetLayout_AuthenticatedAsEmployee(String requestBody) throws Exception {
         mockMvc.perform(post("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -144,8 +144,8 @@ public class RoomControllerTest {
     @Order(9)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/addRoomInappropriateLayoutFormat.csv", delimiter = ';')
-    public void addRoomInappropriateLayoutFormat_AuthenticatedAsEmployee(String requestBody) throws Exception {
+    @CsvFileSource(resources = "/room/addRoom_InappropriateLayoutFormat.csv", delimiter = ';')
+    public void addRoom_InappropriateLayoutFormat_AuthenticatedAsEmployee(String requestBody) throws Exception {
         mockMvc.perform(post("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -197,8 +197,8 @@ public class RoomControllerTest {
     @Order(13)
     @ParameterizedTest
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
-    public void deleteRoom_Unauthenticated(long id) throws Exception {
-        mockMvc.perform(delete("/room?id={id}", id)
+    public void deleteRoom_Unauthenticated(long roomId) throws Exception {
+        mockMvc.perform(delete("/room?id={roomId}", roomId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -209,8 +209,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
-    public void deleteRoom_AuthenticatedAsClient(long id) throws Exception {
-        mockMvc.perform(delete("/room?id={id}", id)
+    public void deleteRoom_AuthenticatedAsClient(long roomId) throws Exception {
+        mockMvc.perform(delete("/room?id={roomId}", roomId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -221,8 +221,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
-    public void deleteRoom_AuthenticatedAsEmployee(long id) throws Exception {
-        mockMvc.perform(delete("/room?id={id}", id)
+    public void deleteRoom_AuthenticatedAsEmployee(long roomId) throws Exception {
+        mockMvc.perform(delete("/room?id={roomId}", roomId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
@@ -232,9 +232,9 @@ public class RoomControllerTest {
     @Order(16)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/deleteRoomDoesntExists.csv", delimiter = ';')
-    public void deleteRoomDoesntExists_AuthenticatedAsEmployee(long id) throws Exception {
-        mockMvc.perform(delete("/room?id={id}", id)
+    @CsvFileSource(resources = "/room/deleteRoom_RoomDoesntExists.csv", delimiter = ';')
+    public void deleteRoom_RoomDoesntExists_AuthenticatedAsEmployee(long roomId) throws Exception {
+        mockMvc.perform(delete("/room?id={roomId}", roomId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -244,10 +244,10 @@ public class RoomControllerTest {
     @Order(17)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/updateRoomDoesntExists.csv", delimiter = ';')
-    public void updateRoomDoesntExists_AuthenticatedAsEmployee(String request) throws Exception {
+    @CsvFileSource(resources = "/room/updateRoom_RoomDoesntExists.csv", delimiter = ';')
+    public void updateRoom_RoomDoesntExists_AuthenticatedAsEmployee(String requestBody) throws Exception {
         mockMvc.perform(put("/room")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())

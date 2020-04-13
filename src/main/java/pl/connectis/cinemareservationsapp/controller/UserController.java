@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/client")
-    public List<UserDTO> getClientByExample(@RequestParam Map<String, String> requestParam) {
+    public List<UserDTO> getClientsByExample(@RequestParam Map<String, String> requestParam) {
         return userService.getClientByExample(requestParam);
     }
 

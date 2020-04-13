@@ -24,7 +24,7 @@ public class TicketController {
     }
 
     @GetMapping("/ticket")
-    public List<TicketDTO> getTicketByExample(@RequestParam Map<String, String> requestParams) {
+    public List<TicketDTO> getTicketsByExample(@RequestParam Map<String, String> requestParams) {
         return ticketService.getTicketsByExample(requestParams);
     }
 

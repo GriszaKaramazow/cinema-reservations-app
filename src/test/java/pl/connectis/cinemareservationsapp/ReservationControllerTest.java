@@ -48,9 +48,9 @@ public class ReservationControllerTest {
     @Order(1)
     @ParameterizedTest
     @CsvFileSource(resources = "/reservation/makeReservation.csv", delimiter = ';')
-    public void makeReservation_Unauthenticated(String request) throws Exception {
+    public void makeReservation_Unauthenticated(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -61,13 +61,14 @@ public class ReservationControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation.csv", delimiter = ';')
-    public void makeReservation_AuthenticatedAsClient(String request, String response) throws Exception {
+    public void makeReservation_AuthenticatedAsClient(String requestBody, String responseBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(response))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(responseBody))
                 .andDo(print());
     }
 
@@ -75,9 +76,9 @@ public class ReservationControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
     @CsvFileSource(resources = "/reservation/makeReservation.csv", delimiter = ';')
-    public void makeReservation_AuthenticatedAsEmployee(String request, String response) throws Exception {
+    public void makeReservation_AuthenticatedAsEmployee(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -87,10 +88,10 @@ public class ReservationControllerTest {
     @Order(4)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/reservation/makeReservationSessionDoesntExists.csv", delimiter = ';')
-    public void makeReservationSessionDoesntExists_AuthenticatedAsClient(String request) throws Exception {
+    @CsvFileSource(resources = "/reservation/makeReservation_SessionDoesntExists.csv", delimiter = ';')
+    public void makeReservation_SessionDoesntExists_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -100,10 +101,10 @@ public class ReservationControllerTest {
     @Order(5)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/reservation/makeReservationEmptySeats.csv", delimiter = ';')
-    public void makeReservationEmptySeats_AuthenticatedAsClient(String request) throws Exception {
+    @CsvFileSource(resources = "/reservation/makeReservation_NoSeatsChosen.csv", delimiter = ';')
+    public void makeReservation_NoSeatsChosen_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -113,10 +114,10 @@ public class ReservationControllerTest {
     @Order(6)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/reservation/makeReservationReservedSeats.csv", delimiter = ';')
-    public void makeReservationReservedSeats_AuthenticatedAsClient(String request) throws Exception {
+    @CsvFileSource(resources = "/reservation/makeReservation_SeatsAlreadyReserved.csv", delimiter = ';')
+    public void makeReservation_SeatsAlreadyReserved_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -126,10 +127,10 @@ public class ReservationControllerTest {
     @Order(7)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/reservation/makeReservationNoSuchRow.csv", delimiter = ';')
-    public void makeReservationNoSuchRow_AuthenticatedAsClient(String request) throws Exception {
+    @CsvFileSource(resources = "/reservation/makeReservation_NoSuchRowInRoom.csv", delimiter = ';')
+    public void makeReservation_NoSuchRowInRoom_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -139,10 +140,10 @@ public class ReservationControllerTest {
     @Order(8)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/reservation/makeReservationNoSuchSeatInTheRow.csv", delimiter = ';')
-    public void makeReservationNoSuchSeatInTheRow_AuthenticatedAsClient(String request) throws Exception {
+    @CsvFileSource(resources = "/reservation/makeReservation_NoSuchSeatInRow.csv", delimiter = ';')
+    public void makeReservation_NoSuchSeatInRow_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -152,10 +153,10 @@ public class ReservationControllerTest {
     @Order(9)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/reservation/makeReservationSeatsInDifferentRows.csv", delimiter = ';')
-    public void makeReservationSeatsInDifferentRows_AuthenticatedAsClient(String request) throws Exception {
+    @CsvFileSource(resources = "/reservation/makeReservation_SeatsInDifferentRows.csv", delimiter = ';')
+    public void makeReservation_SeatsInDifferentRows_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -165,10 +166,10 @@ public class ReservationControllerTest {
     @Order(10)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/reservation/makeReservationNotNextToEachOther.csv", delimiter = ';')
-    public void makeReservationNotNextToEachOther_AuthenticatedAsClient(String request) throws Exception {
+    @CsvFileSource(resources = "/reservation/makeReservation_SeatsNotNextToEachOther.csv", delimiter = ';')
+    public void makeReservation_SeatsNotNextToEachOther_AuthenticatedAsClient(String requestBody) throws Exception {
         mockMvc.perform(post("/reservation")
-                .content(request)
+                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
