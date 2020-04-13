@@ -20,7 +20,7 @@ public class RoomController {
     }
 
     @GetMapping
-    public List<Room> getRoom(@RequestParam Map<String, String> requestParam) {
+    public List<Room> getRoomsByExample(@RequestParam Map<String, String> requestParam) {
         return roomService.findRoom(requestParam);
     }
 
