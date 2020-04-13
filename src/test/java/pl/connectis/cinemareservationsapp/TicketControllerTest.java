@@ -1,74 +1,73 @@
 package pl.connectis.cinemareservationsapp;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Properties;
-
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
+@TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 @AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("develop")
 public class TicketControllerTest {
 
     @Autowired
+    private WebApplicationContext webApplicationContext;
+
     private MockMvc mockMvc;
 
     @BeforeAll
-    public static void setSpringProfile() {
-        Properties properties = System.getProperties();
-        properties.setProperty("spring.profiles.active", "develop");
-    }
-
-    @AfterAll
-    public static void resetSpringProfile() {
-        System.clearProperty("spring.profiles.active");
+    public void buildMockMvc() {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .apply(springSecurity())
+                .build();
     }
 
     @Order(1)
-    @ParameterizedTest
-    @CsvFileSource(resources = "/ticket/getTicketAll.csv", delimiter = ';')
-    public void getTicketAll(String response) throws Exception {
+    @Test
+    public void getTicketByExampleAll_Unauthenticated() throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(status().isForbidden())
                 .andDo(print());
     }
 
     @Order(2)
-    @ParameterizedTest
-    @CsvFileSource(resources = "/ticket/getTicketBySession.csv", delimiter = ';')
-    public void getTicketBySession(long sessionId, String response) throws Exception {
-        mockMvc.perform(get("/ticket?session={sessionId}", sessionId)
+    @Test
+    @WithMockUser(roles = "CLIENT")
+    public void getTicketByExampleAll_AuthenticatedAsClient() throws Exception {
+        mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(response))
+                .andExpect(status().isForbidden())
                 .andDo(print());
     }
 
     @Order(3)
     @ParameterizedTest
-    @WithMockUser("filip.chmielewski@poczta.pl")
-    @CsvFileSource(resources = "/ticket/getMyTickets.csv", delimiter = ';')
-    public void getMyTickets(String response) throws Exception {
-        mockMvc.perform(get("/mytickets")
+    @WithMockUser(roles = "EMPLOYEE")
+    @CsvFileSource(resources = "/ticket/getTicketByExampleAll.csv", delimiter = ';')
+    public void getTicketByExampleAll_AuthenticatedAsEmployee(String response) throws Exception {
+        mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(response))
@@ -77,8 +76,75 @@ public class TicketControllerTest {
 
     @Order(4)
     @ParameterizedTest
+    @WithMockUser(roles = "EMPLOYEE")
+    @CsvFileSource(resources = "/ticket/getTicketByExampleSession.csv", delimiter = ';')
+    public void getTicketByExampleSession_AuthenticatedAsEmployee(long sessionId, String response) throws Exception {
+        mockMvc.perform(get("/ticket?session={sessionId}", sessionId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(response))
+                .andDo(print());
+    }
+
+    @Order(5)
+    @Test
+    public void getMyTickets_Unauthenticated() throws Exception {
+        mockMvc.perform(get("/mytickets")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Order(6)
+    @ParameterizedTest
+    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @CsvFileSource(resources = "/ticket/getMyTickets.csv", delimiter = ';')
+    public void getMyTickets_AuthenticatedAsClient(String response) throws Exception {
+        mockMvc.perform(get("/mytickets")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(response))
+                .andDo(print());
+    }
+
+    @Order(7)
+    @Test
+    @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
+    public void getMyTickets_AuthenticatedAsEmployee() throws Exception {
+        mockMvc.perform(get("/mytickets")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Order(8)
+    @ParameterizedTest
     @CsvFileSource(resources = "/ticket/deleteTicket.csv", delimiter = ';')
-    public void deleteTicket(long id) throws Exception {
+    public void deleteTicket_Unauthenticated(long id) throws Exception {
+        mockMvc.perform(delete("/ticket?id={id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Order(9)
+    @ParameterizedTest
+    @WithMockUser(roles = "CLIENT")
+    @CsvFileSource(resources = "/ticket/deleteTicket.csv", delimiter = ';')
+    public void deleteTicket_AuthenticatedAsClient(long id) throws Exception {
+        mockMvc.perform(delete("/ticket?id={id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Order(10)
+    @ParameterizedTest
+    @WithMockUser(roles = "EMPLOYEE")
+    @CsvFileSource(resources = "/ticket/deleteTicket.csv", delimiter = ';')
+    public void deleteTicket_AuthenticatedAsEmployee(long id) throws Exception {
         mockMvc.perform(delete("/ticket/?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -86,10 +152,11 @@ public class TicketControllerTest {
                 .andDo(print());
     }
 
-    @Order(5)
+    @Order(11)
     @ParameterizedTest
+    @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/ticket/deleteTicketDoesntExist.csv", delimiter = ';')
-    public void deleteTicketDoesntExist(long id) throws Exception {
+    public void deleteTicketDoesntExist_AuthenticatedAsEmployee(long id) throws Exception {
         mockMvc.perform(delete("/ticket/?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
