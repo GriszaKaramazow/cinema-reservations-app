@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("develop")
 public class MovieControllerTest {
 
-
     @Autowired
     private WebApplicationContext webApplicationContext;
 
