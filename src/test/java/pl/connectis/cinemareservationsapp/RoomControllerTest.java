@@ -77,7 +77,7 @@ public class RoomControllerTest {
     @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/getRoomBy_GetByCapacity.csv", delimiter = ';')
+    @CsvFileSource(resources = "/room/getRoomsByExample_GetByCapacity.csv", delimiter = ';')
     public void getRoomsByExample_GetByCapacity_AuthenticatedAsEmployee(int capacity, String responseBody) throws Exception {
         mockMvc.perform(get("/room?capacity={capacity}", capacity)
                 .contentType(MediaType.APPLICATION_JSON))

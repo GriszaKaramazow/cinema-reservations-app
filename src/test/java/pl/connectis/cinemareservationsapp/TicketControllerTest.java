@@ -78,7 +78,7 @@ public class TicketControllerTest {
     @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/ticket/getTicketByExample_GetBySession.csv", delimiter = ';')
+    @CsvFileSource(resources = "/ticket/getTicketsByExample_GetBySession.csv", delimiter = ';')
     public void getTicketsByExample_GetBySession_AuthenticatedAsEmployee(long sessionId, String responseBody) throws Exception {
         mockMvc.perform(get("/ticket?session={sessionId}", sessionId)
                 .contentType(MediaType.APPLICATION_JSON))

@@ -64,7 +64,7 @@ public class UserControllerTest {
     @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/user/getClientsByExampleGetAll.csv", delimiter = ';')
+    @CsvFileSource(resources = "/user/getClientsByExample_GetAll.csv", delimiter = ';')
     public void getClientsByExample_GetAll_AuthenticatedAsEmployee(String responseBody) throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -99,7 +99,7 @@ public class UserControllerTest {
     @Order(6)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
-    @CsvFileSource(resources = "/user/getLoggedUser_getClient", delimiter = ';')
+    @CsvFileSource(resources = "/user/getLoggedUser_GetClient", delimiter = ';')
     public void getLoggedUser_getClient_AuthenticatedAsClient(String responseBody) throws Exception {
         mockMvc.perform(get("/myaccount")
                 .contentType(MediaType.APPLICATION_JSON))
