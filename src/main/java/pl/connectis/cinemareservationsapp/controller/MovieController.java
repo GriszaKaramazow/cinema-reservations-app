@@ -20,7 +20,7 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<Movie> getMovieByExample(@RequestParam Map<String, String> requestParam) {
+    public List<Movie> getMoviesByExample(@RequestParam Map<String, String> requestParam) {
         return movieService.getMovieByExample(requestParam);
     }
 
