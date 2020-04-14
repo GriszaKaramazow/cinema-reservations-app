@@ -53,8 +53,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(2)
@@ -68,8 +67,7 @@ public class ReservationControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(3)
@@ -81,8 +79,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(4)
@@ -94,8 +91,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Order(5)
@@ -107,8 +103,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Order(6)
@@ -120,8 +115,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Order(7)
@@ -133,8 +127,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Order(8)
@@ -146,8 +139,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Order(9)
@@ -159,8 +151,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Order(10)
@@ -172,8 +163,7 @@ public class ReservationControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
 }

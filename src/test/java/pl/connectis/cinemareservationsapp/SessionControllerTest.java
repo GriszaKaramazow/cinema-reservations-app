@@ -53,8 +53,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(2)
@@ -66,8 +65,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(3)
@@ -79,8 +77,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(4)
@@ -91,8 +88,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(5)
@@ -103,8 +99,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(6)
@@ -115,8 +110,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(7)
@@ -127,8 +121,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(8)
@@ -140,8 +133,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(9)
@@ -153,8 +145,7 @@ public class SessionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(10)
@@ -165,8 +156,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(11)
@@ -178,8 +168,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(12)
@@ -193,8 +182,7 @@ public class SessionControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(13)
@@ -206,8 +194,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Order(14)
@@ -219,8 +206,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Order(15)
@@ -232,8 +218,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Order(16)
@@ -245,8 +230,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Order(17)
@@ -258,8 +242,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Order(18)
@@ -270,8 +253,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(19)
@@ -283,8 +265,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(20)
@@ -298,8 +279,7 @@ public class SessionControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(21)
@@ -311,8 +291,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Order(22)
@@ -324,8 +303,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Order(23)
@@ -335,8 +313,7 @@ public class SessionControllerTest {
         mockMvc.perform(delete("/session?id={sessionId}", sessionId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(24)
@@ -347,8 +324,7 @@ public class SessionControllerTest {
         mockMvc.perform(delete("/session?id={sessionId}", sessionId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(25)
@@ -359,8 +335,7 @@ public class SessionControllerTest {
         mockMvc.perform(delete("/session?id={sessionId}", sessionId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+                .andExpect(status().isNoContent());
     }
 
     @Order(26)
@@ -371,8 +346,7 @@ public class SessionControllerTest {
         mockMvc.perform(delete("/session?id={sessionId}", sessionId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
     @Order(27)
@@ -384,8 +358,7 @@ public class SessionControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
 }

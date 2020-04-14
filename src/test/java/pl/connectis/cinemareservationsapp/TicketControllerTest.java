@@ -48,8 +48,7 @@ public class TicketControllerTest {
     public void getTicketsByExample_GetAll_Unauthenticated() throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(2)
@@ -58,8 +57,7 @@ public class TicketControllerTest {
     public void getTicketsByExample_GetAll_AuthenticatedAsClient() throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(3)
@@ -71,8 +69,7 @@ public class TicketControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(4)
@@ -84,8 +81,7 @@ public class TicketControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(5)
@@ -93,8 +89,7 @@ public class TicketControllerTest {
     public void getMyTickets_Unauthenticated() throws Exception {
         mockMvc.perform(get("/mytickets")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(6)
@@ -106,8 +101,7 @@ public class TicketControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(7)
@@ -116,8 +110,7 @@ public class TicketControllerTest {
     public void getMyTickets_AuthenticatedAsEmployee() throws Exception {
         mockMvc.perform(get("/mytickets")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(8)
@@ -127,8 +120,7 @@ public class TicketControllerTest {
         mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(9)
@@ -139,8 +131,7 @@ public class TicketControllerTest {
         mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(10)
@@ -151,8 +142,7 @@ public class TicketControllerTest {
         mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+                .andExpect(status().isNoContent());
     }
 
     @Order(11)
@@ -163,8 +153,7 @@ public class TicketControllerTest {
         mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isNotFound());
     }
 
 }

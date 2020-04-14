@@ -18,7 +18,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,8 +46,7 @@ public class UserControllerTest {
     public void getClientsByExample_GetAll_Unauthenticated() throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(2)
@@ -57,8 +55,7 @@ public class UserControllerTest {
     public void getClientsByExample_GetAll_AuthenticatedAsClient() throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(3)
@@ -70,8 +67,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(4)
@@ -83,8 +79,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(5)
@@ -92,8 +87,7 @@ public class UserControllerTest {
     public void getLoggedUser_Unauthenticated() throws Exception {
         mockMvc.perform(get("/myaccount")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(6)
@@ -105,8 +99,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(7)
@@ -118,8 +111,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(8)
@@ -132,8 +124,7 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(9)
@@ -144,8 +135,7 @@ public class UserControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(10)
@@ -157,8 +147,7 @@ public class UserControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(11)
@@ -172,8 +161,7 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(12)
@@ -184,8 +172,7 @@ public class UserControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(print());
+                .andExpect(status().isForbidden());
     }
 
     @Order(13)
@@ -199,8 +186,7 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(14)
@@ -214,8 +200,7 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseBody))
-                .andDo(print());
+                .andExpect(content().json(responseBody));
     }
 
     @Order(16)
@@ -227,8 +212,7 @@ public class UserControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
 }
