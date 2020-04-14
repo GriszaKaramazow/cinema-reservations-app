@@ -126,7 +126,8 @@ public class DevelopDatabaseInitializer implements CommandLineRunner {
         roomService.save(new Room(1L, 154, "22,22,22,22,22,22,22"));
         roomService.save(new Room(2L, 50, "10,10,10,10,10"));
         roomService.save(new Room(3L, 300, "30,30,30,30,30,30,30,30,30,30"));
-        roomService.save(new Room(4L, 90, "15,15,15,15,15,15"));
+        roomService.save(new Room(4L, 96, "16,16,16,16,16,16"));
+        roomService.save(new Room(5L, 90, "15,15,15,15,15,15"));
     }
 
     private void addSessions() {
@@ -134,7 +135,7 @@ public class DevelopDatabaseInitializer implements CommandLineRunner {
                 LocalDate.of(2020, 7, 10), LocalTime.of(15, 0), 14.99));
         sessionService.save(new SessionDTO(2L, 2L, 2L,
                 LocalDate.of(2020, 7, 2), LocalTime.of(16, 0), 14.99));
-        sessionService.save(new SessionDTO(3L, 1L, 4L,
+        sessionService.save(new SessionDTO(3L, 1L, 5L,
                 LocalDate.of(2020, 7, 2), LocalTime.of(17, 0), 14.99));
         sessionService.save(new SessionDTO(4L, 4L, 1L,
                 LocalDate.of(2020, 7, 2), LocalTime.of(18, 0), 14.99));

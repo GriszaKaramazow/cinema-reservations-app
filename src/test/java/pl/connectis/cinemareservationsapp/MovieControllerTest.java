@@ -1,10 +1,6 @@
 package pl.connectis.cinemareservationsapp;
 
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -24,9 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
-@TestMethodOrder(OrderAnnotation.class)
 @AutoConfigureMockMvc(addFilters = false)
-@ActiveProfiles("develop")
 public class MovieControllerTest {
 
     @Autowired
@@ -41,7 +35,6 @@ public class MovieControllerTest {
                 .apply(springSecurity())
                 .build();
     }
-    @Order(1)
     @ParameterizedTest
     @CsvFileSource(resources = "/movie/getMoviesByExample_GetAllMovies.csv", delimiter = ';')
     public void getMoviesByExample_HasAccessWhenUnauthenticated_StatusOkAndCorrectResponseBodyReceived(
@@ -53,7 +46,6 @@ public class MovieControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(2)
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/movie/getMoviesByExample_GetAllMovies.csv", delimiter = ';')
@@ -66,7 +58,6 @@ public class MovieControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/movie/getMoviesByExample_GetAllMovies.csv", delimiter = ';')
@@ -79,7 +70,6 @@ public class MovieControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(4)
     @ParameterizedTest
     @CsvFileSource(resources = "/movie/getMoviesByExample_GetMoviesByCategory.csv", delimiter = ';')
     public void getMoviesByExample_GetMoviesByCategory_StatusOkAndCorrectResponseBodyReceived(
@@ -90,7 +80,6 @@ public class MovieControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(responseBody));
     }
-    @Order(5)
     @ParameterizedTest
     @CsvFileSource(resources = "/movie/getMoviesByExample_GetMoviesByTitle.csv", delimiter = ';')
     public void getMoviesByExample_GetMoviesByTitle_StatusOkAndCorrectResponseBodyReceived(
@@ -102,7 +91,6 @@ public class MovieControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(6)
     @ParameterizedTest
     @CsvFileSource(resources = "/movie/addMovie.csv", delimiter = ';')
     public void addMovie_HasAccessWhenUnauthenticated_StatusForbidden(
@@ -113,7 +101,6 @@ public class MovieControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
-    @Order(7)
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/movie/addMovie.csv", delimiter = ';')
@@ -126,7 +113,7 @@ public class MovieControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(8)
+    @DirtiesContext
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/movie/addMovie.csv", delimiter = ';')
@@ -141,7 +128,6 @@ public class MovieControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(9)
     @ParameterizedTest
     @CsvFileSource(resources = "/movie/updateMovie.csv", delimiter = ';')
     public void updateMovie_HasAccessWhenUnauthenticated_StatusForbidden(
@@ -153,7 +139,6 @@ public class MovieControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(10)
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/movie/updateMovie.csv", delimiter = ';')
@@ -166,7 +151,7 @@ public class MovieControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(11)
+    @DirtiesContext
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/movie/updateMovie.csv", delimiter = ';')
@@ -180,7 +165,6 @@ public class MovieControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(16)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/movie/updateMovie_MovieDoesntExist.csv", delimiter = ';')
@@ -193,7 +177,6 @@ public class MovieControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Order(12)
     @ParameterizedTest
     @CsvFileSource(resources = "/movie/deleteMovie.csv", delimiter = ';')
     public void deleteMovie_HasAccessWhenUnauthenticated_StatusForbidden(
@@ -204,7 +187,6 @@ public class MovieControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(13)
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/movie/deleteMovie.csv", delimiter = ';')
@@ -216,7 +198,7 @@ public class MovieControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(14)
+    @DirtiesContext
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/movie/deleteMovie.csv", delimiter = ';')
@@ -228,7 +210,6 @@ public class MovieControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Order(15)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/movie/deleteMovie_MovieDoesntExist.csv", delimiter = ';')

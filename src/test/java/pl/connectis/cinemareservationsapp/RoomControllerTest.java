@@ -1,10 +1,7 @@
 package pl.connectis.cinemareservationsapp;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -24,9 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
-@TestMethodOrder(OrderAnnotation.class)
 @AutoConfigureMockMvc(addFilters = false)
-@ActiveProfiles("develop")
 public class RoomControllerTest {
 
     @Autowired
@@ -42,7 +37,6 @@ public class RoomControllerTest {
                 .build();
     }
 
-    @Order(1)
     @Test
     public void getRoomsByExample_HasAccessWhenUnauthenticated_StatusForbidden() throws Exception {
         mockMvc.perform(get("/room")
@@ -50,7 +44,6 @@ public class RoomControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(2)
     @Test
     @WithMockUser(roles = "CLIENT")
     public void getRoomsByExample_HasAccessWhenAuthenticatedAsClient_StatusForbidden() throws Exception {
@@ -59,7 +52,6 @@ public class RoomControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/getRoomsByExample_GetAllRooms.csv", delimiter = ';')
@@ -72,7 +64,6 @@ public class RoomControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/getRoomsByExample_GetRoomsByCapacity.csv", delimiter = ';')
@@ -85,7 +76,6 @@ public class RoomControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(5)
     @ParameterizedTest
     @CsvFileSource(resources = "/room/addRoom.csv", delimiter = ';')
     public void addRoom_HasAccessWhenUnauthenticated_StatusForbidden(
@@ -97,7 +87,6 @@ public class RoomControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(6)
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/room/addRoom.csv", delimiter = ';')
@@ -110,7 +99,7 @@ public class RoomControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(7)
+    @DirtiesContext
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/addRoom.csv", delimiter = ';')
@@ -125,7 +114,6 @@ public class RoomControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(8)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/addRoom_CapacityDoesntMeetLayout.csv", delimiter = ';')
@@ -138,7 +126,6 @@ public class RoomControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Order(9)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/addRoom_InappropriateLayoutFormat.csv", delimiter = ';')
@@ -151,7 +138,6 @@ public class RoomControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Order(10)
     @ParameterizedTest
     @CsvFileSource(resources = "/room/updateRoom.csv", delimiter = ';')
     public void updateRoom_HasAccessWhenUnauthenticated_StatusForbidden(
@@ -163,7 +149,6 @@ public class RoomControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(11)
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/room/updateRoom.csv", delimiter = ';')
@@ -176,7 +161,7 @@ public class RoomControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(12)
+    @DirtiesContext
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/updateRoom.csv", delimiter = ';')
@@ -191,7 +176,6 @@ public class RoomControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(17)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/updateRoom_RoomDoesntExists.csv", delimiter = ';')
@@ -204,7 +188,6 @@ public class RoomControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Order(13)
     @ParameterizedTest
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
     public void deleteRoom_HasAccessWhenUnauthenticated_StatusForbidden(
@@ -215,7 +198,6 @@ public class RoomControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(14)
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
@@ -227,7 +209,6 @@ public class RoomControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(15)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
@@ -239,7 +220,6 @@ public class RoomControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Order(16)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/deleteRoom_RoomDoesntExists.csv", delimiter = ';')

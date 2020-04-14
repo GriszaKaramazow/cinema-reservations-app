@@ -1,9 +1,6 @@
 package pl.connectis.cinemareservationsapp;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -23,9 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
-@TestMethodOrder(OrderAnnotation.class)
 @AutoConfigureMockMvc(addFilters = false)
-@ActiveProfiles("develop")
 public class ReservationControllerTest {
 
     @Autowired
@@ -41,7 +36,6 @@ public class ReservationControllerTest {
                 .build();
     }
 
-    @Order(1)
     @ParameterizedTest
     @CsvFileSource(resources = "/reservation/makeReservation.csv", delimiter = ';')
     public void makeReservation_HasAccessWhenUnauthenticated_StatusForbidden(
@@ -53,7 +47,7 @@ public class ReservationControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(2)
+    @DirtiesContext
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation.csv", delimiter = ';')
@@ -68,7 +62,6 @@ public class ReservationControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
-    @Order(3)
     @ParameterizedTest
     @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
     @CsvFileSource(resources = "/reservation/makeReservation.csv", delimiter = ';')
@@ -81,7 +74,6 @@ public class ReservationControllerTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Order(4)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_SessionDoesntExists.csv", delimiter = ';')
@@ -94,7 +86,6 @@ public class ReservationControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Order(5)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_NoSeatsChosen.csv", delimiter = ';')
@@ -107,7 +98,6 @@ public class ReservationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Order(6)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_SeatsAlreadyReserved.csv", delimiter = ';')
@@ -120,7 +110,6 @@ public class ReservationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Order(7)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_NoSuchRowInRoom.csv", delimiter = ';')
@@ -133,7 +122,6 @@ public class ReservationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Order(8)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_NoSuchSeatInRow.csv", delimiter = ';')
@@ -146,7 +134,6 @@ public class ReservationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Order(9)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_SeatsInDifferentRows.csv", delimiter = ';')
@@ -159,7 +146,6 @@ public class ReservationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Order(10)
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_SeatsNotNextToEachOther.csv", delimiter = ';')
