@@ -201,7 +201,7 @@ public class UserControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/user/updateUser_InappropriateUsername.csv", delimiter = ';')
     public void updateUser_InappropriateUsername_StatusBadRequest(
             String requestBody) throws Exception {

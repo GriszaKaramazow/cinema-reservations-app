@@ -63,7 +63,7 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
+    @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/reservation/makeReservation.csv", delimiter = ';')
     public void makeReservation_HasAccessWhenAuthenticatedAsEmployee_StatusForbidden(
             String requestBody) throws Exception {
@@ -75,7 +75,7 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_SessionDoesntExists.csv", delimiter = ';')
     public void makeReservation_SessionDoesntExists_StatusNotFound(
             String requestBody) throws Exception {
@@ -87,7 +87,7 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_NoSeatsChosen.csv", delimiter = ';')
     public void makeReservation_NoSeatsChosen_StatusBadRequest(
             String requestBody) throws Exception {
@@ -99,7 +99,7 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_SeatsAlreadyReserved.csv", delimiter = ';')
     public void makeReservation_SeatsAlreadyReserved_StatusBadRequest(
             String requestBody) throws Exception {
@@ -111,7 +111,7 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_NoSuchRowInRoom.csv", delimiter = ';')
     public void makeReservation_NoSuchRowInRoom_StatusBadRequest(
             String requestBody) throws Exception {
@@ -123,7 +123,7 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_NoSuchSeatInRow.csv", delimiter = ';')
     public void makeReservation_NoSuchSeatInRow_StatusBadRequest(
             String requestBody) throws Exception {
@@ -135,7 +135,7 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_SeatsInDifferentRows.csv", delimiter = ';')
     public void makeReservation_SeatsInDifferentRows_StatusBadRequest(
             String requestBody) throws Exception {
@@ -147,7 +147,7 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
-    @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
+    @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/reservation/makeReservation_SeatsNotNextToEachOther.csv", delimiter = ';')
     public void makeReservation_SeatsNotNextToEachOther_StatusBadRequest(
             String requestBody) throws Exception {
