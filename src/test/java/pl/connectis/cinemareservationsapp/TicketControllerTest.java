@@ -45,7 +45,7 @@ public class TicketControllerTest {
 
     @Order(1)
     @Test
-    public void getTicketsByExample_GetAll_Unauthenticated() throws Exception {
+    public void getTicketsByExample_HasAccessWhenUnauthenticated_StatusForbidden() throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -54,7 +54,7 @@ public class TicketControllerTest {
     @Order(2)
     @Test
     @WithMockUser(roles = "CLIENT")
-    public void getTicketsByExample_GetAll_AuthenticatedAsClient() throws Exception {
+    public void getTicketsByExample_HasAccessWhenAuthenticatedAsClient_StatusForbidden() throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -63,8 +63,9 @@ public class TicketControllerTest {
     @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/ticket/getTicketsByExample_GetAll.csv", delimiter = ';')
-    public void getTicketsByExample_GetAll_AuthenticatedAsEmployee(String responseBody) throws Exception {
+    @CsvFileSource(resources = "/ticket/getTicketsByExample_GetAllTickets.csv", delimiter = ';')
+    public void getTicketsByExample_HasAccessWhenAuthenticatedAsEmployee_StatusOkAndCorrectResponseBodyReceived(
+            String responseBody) throws Exception {
         mockMvc.perform(get("/ticket")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -75,8 +76,9 @@ public class TicketControllerTest {
     @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/ticket/getTicketsByExample_GetBySession.csv", delimiter = ';')
-    public void getTicketsByExample_GetBySession_AuthenticatedAsEmployee(long sessionId, String responseBody) throws Exception {
+    @CsvFileSource(resources = "/ticket/getTicketsByExample_GetTicketsBySession.csv", delimiter = ';')
+    public void getTicketsByExample_GetTicketsBySession_StatusOkAndCorrectResponseBodyReceived(
+            long sessionId, String responseBody) throws Exception {
         mockMvc.perform(get("/ticket?session={sessionId}", sessionId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -86,7 +88,7 @@ public class TicketControllerTest {
 
     @Order(5)
     @Test
-    public void getMyTickets_Unauthenticated() throws Exception {
+    public void getMyTickets_HasAccessWhenUnauthenticated_StatusForbidden() throws Exception {
         mockMvc.perform(get("/mytickets")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -96,7 +98,8 @@ public class TicketControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/ticket/getMyTickets.csv", delimiter = ';')
-    public void getMyTickets_AuthenticatedAsClient(String responseBody) throws Exception {
+    public void getMyTickets_HasAccessWhenAuthenticatedAsClient_StatusOkAndCorrectResponseBodyReceived(
+            String responseBody) throws Exception {
         mockMvc.perform(get("/mytickets")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -107,7 +110,7 @@ public class TicketControllerTest {
     @Order(7)
     @Test
     @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
-    public void getMyTickets_AuthenticatedAsEmployee() throws Exception {
+    public void getMyTickets_HasAccessWhenAuthenticatedAsEmployee_StatusForbidden() throws Exception {
         mockMvc.perform(get("/mytickets")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -116,7 +119,8 @@ public class TicketControllerTest {
     @Order(8)
     @ParameterizedTest
     @CsvFileSource(resources = "/ticket/deleteTicket.csv", delimiter = ';')
-    public void deleteTicket_Unauthenticated(long id) throws Exception {
+    public void deleteTicket_HasAccessWhenUnauthenticated_StatusForbidden(
+            long id) throws Exception {
         mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -127,7 +131,8 @@ public class TicketControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/ticket/deleteTicket.csv", delimiter = ';')
-    public void deleteTicket_AuthenticatedAsClient(long id) throws Exception {
+    public void deleteTicket_HasAccessWhenAuthenticatedAsClient_StatusForbidden(
+            long id) throws Exception {
         mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -138,7 +143,8 @@ public class TicketControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/ticket/deleteTicket.csv", delimiter = ';')
-    public void deleteTicket_AuthenticatedAsEmployee(long id) throws Exception {
+    public void deleteTicket_HasAccessWhenAuthenticatedAsEmployee_StatusNoContent(
+            long id) throws Exception {
         mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -148,8 +154,9 @@ public class TicketControllerTest {
     @Order(11)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/ticket/deleteTicketDoesntExist.csv", delimiter = ';')
-    public void deleteTicketDoesntExist_AuthenticatedAsEmployee(long id) throws Exception {
+    @CsvFileSource(resources = "/ticket/deleteTicket_TicketDoesntExist.csv", delimiter = ';')
+    public void deleteTicket_TicketDoesntExist_StatusNotFound(
+            long id) throws Exception {
         mockMvc.perform(delete("/ticket?id={id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

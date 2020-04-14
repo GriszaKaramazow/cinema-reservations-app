@@ -44,7 +44,7 @@ public class RoomControllerTest {
 
     @Order(1)
     @Test
-    public void getRoomsByExample_GetAll_Unauthenticated() throws Exception {
+    public void getRoomsByExample_HasAccessWhenUnauthenticated_StatusForbidden() throws Exception {
         mockMvc.perform(get("/room")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -53,7 +53,7 @@ public class RoomControllerTest {
     @Order(2)
     @Test
     @WithMockUser(roles = "CLIENT")
-    public void getRoomsByExample_GetAll_AuthenticatedAsClient() throws Exception {
+    public void getRoomsByExample_HasAccessWhenAuthenticatedAsClient_StatusForbidden() throws Exception {
         mockMvc.perform(get("/room")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -62,8 +62,9 @@ public class RoomControllerTest {
     @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/getRoomsByExample_GetAll.csv", delimiter = ';')
-    public void getRoomsByExample_GetAll_AuthenticatedAsEmployee(String responseBody) throws Exception {
+    @CsvFileSource(resources = "/room/getRoomsByExample_GetAllRooms.csv", delimiter = ';')
+    public void getRoomsByExample_HasAccessWhenAuthenticatedAsEmployee_StatusOkAndCorrectResponseBodyReceived(
+            String responseBody) throws Exception {
         mockMvc.perform(get("/room")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -74,8 +75,9 @@ public class RoomControllerTest {
     @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/getRoomsByExample_GetByCapacity.csv", delimiter = ';')
-    public void getRoomsByExample_GetByCapacity_AuthenticatedAsEmployee(int capacity, String responseBody) throws Exception {
+    @CsvFileSource(resources = "/room/getRoomsByExample_GetRoomsByCapacity.csv", delimiter = ';')
+    public void getRoomsByExample_GetRoomsByCapacity_StatusOkAndCorrectResponseBodyReceived(
+            int capacity, String responseBody) throws Exception {
         mockMvc.perform(get("/room?capacity={capacity}", capacity)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -86,7 +88,8 @@ public class RoomControllerTest {
     @Order(5)
     @ParameterizedTest
     @CsvFileSource(resources = "/room/addRoom.csv", delimiter = ';')
-    public void addRoom_Unauthenticated(String requestBody) throws Exception {
+    public void addRoom_HasAccessWhenUnauthenticated_StatusForbidden(
+            String requestBody) throws Exception {
         mockMvc.perform(post("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +101,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/room/addRoom.csv", delimiter = ';')
-    public void addRoom_AuthenticatedAsClient(String requestBody) throws Exception {
+    public void addRoom_HasAccessWhenAuthenticatedAsClient_StatusForbidden(
+            String requestBody) throws Exception {
         mockMvc.perform(post("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -110,12 +114,12 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/addRoom.csv", delimiter = ';')
-    public void addRoom_AuthenticatedAsEmployee(String requestBody, String responseBody) throws Exception {
+    public void addRoom_HasAccessWhenAuthenticatedAsEmployee_StatusCreatedAndCorrectResponseBodyReceived(
+            String requestBody, String responseBody) throws Exception {
         mockMvc.perform(post("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(responseBody));
@@ -125,7 +129,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/addRoom_CapacityDoesntMeetLayout.csv", delimiter = ';')
-    public void addRoom_CapacityDoesntMeetLayout_AuthenticatedAsEmployee(String requestBody) throws Exception {
+    public void addRoom_CapacityDoesntMeetLayout_StatusBadRequest(
+            String requestBody) throws Exception {
         mockMvc.perform(post("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -137,7 +142,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/addRoom_InappropriateLayoutFormat.csv", delimiter = ';')
-    public void addRoom_InappropriateLayoutFormat_AuthenticatedAsEmployee(String requestBody) throws Exception {
+    public void addRoom_InappropriateLayoutFormat_StatusBadRequest(
+            String requestBody) throws Exception {
         mockMvc.perform(post("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -148,7 +154,8 @@ public class RoomControllerTest {
     @Order(10)
     @ParameterizedTest
     @CsvFileSource(resources = "/room/updateRoom.csv", delimiter = ';')
-    public void updateRoom_Unauthenticated(String requestBody) throws Exception {
+    public void updateRoom_HasAccessWhenUnauthenticated_StatusForbidden(
+            String requestBody) throws Exception {
         mockMvc.perform(put("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -160,7 +167,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/room/updateRoom.csv", delimiter = ';')
-    public void updateRoom_AuthenticatedAsClient(String requestBody) throws Exception {
+    public void updateRoom_HasAccessWhenAuthenticatedAsClient_StatusForbidden(
+            String requestBody) throws Exception {
         mockMvc.perform(put("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -172,7 +180,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/updateRoom.csv", delimiter = ';')
-    public void updateRoom_AuthenticatedAsEmployee(String requestBody, String responseBody) throws Exception {
+    public void updateRoom_HasAccessWhenAuthenticatedAsEmployee_StatusOkAndCorrectResponseBodyReceived(
+            String requestBody, String responseBody) throws Exception {
         mockMvc.perform(put("/room")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -182,10 +191,24 @@ public class RoomControllerTest {
                 .andExpect(content().json(responseBody));
     }
 
+    @Order(17)
+    @ParameterizedTest
+    @WithMockUser(roles = "EMPLOYEE")
+    @CsvFileSource(resources = "/room/updateRoom_RoomDoesntExists.csv", delimiter = ';')
+    public void updateRoom_RoomDoesntExists_StatusNotFound(
+            String requestBody) throws Exception {
+        mockMvc.perform(put("/room")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
     @Order(13)
     @ParameterizedTest
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
-    public void deleteRoom_Unauthenticated(long roomId) throws Exception {
+    public void deleteRoom_HasAccessWhenUnauthenticated_StatusForbidden(
+            long roomId) throws Exception {
         mockMvc.perform(delete("/room?id={roomId}", roomId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -196,7 +219,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
-    public void deleteRoom_AuthenticatedAsClient(long roomId) throws Exception {
+    public void deleteRoom_HasAccessWhenAuthenticatedAsClient_StatusForbidden(
+            long roomId) throws Exception {
         mockMvc.perform(delete("/room?id={roomId}", roomId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -207,7 +231,8 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/deleteRoom.csv", delimiter = ';')
-    public void deleteRoom_AuthenticatedAsEmployee(long roomId) throws Exception {
+    public void deleteRoom_HasAccessWhenAuthenticatedAsEmployee_StatusNoContent(
+            long roomId) throws Exception {
         mockMvc.perform(delete("/room?id={roomId}", roomId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -218,20 +243,9 @@ public class RoomControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/room/deleteRoom_RoomDoesntExists.csv", delimiter = ';')
-    public void deleteRoom_RoomDoesntExists_AuthenticatedAsEmployee(long roomId) throws Exception {
+    public void deleteRoom_RoomDoesntExists_StatusNotFound(
+            long roomId) throws Exception {
         mockMvc.perform(delete("/room?id={roomId}", roomId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
-
-    @Order(17)
-    @ParameterizedTest
-    @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/room/updateRoom_RoomDoesntExists.csv", delimiter = ';')
-    public void updateRoom_RoomDoesntExists_AuthenticatedAsEmployee(String requestBody) throws Exception {
-        mockMvc.perform(put("/room")
-                .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

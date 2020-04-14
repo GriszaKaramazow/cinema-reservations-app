@@ -44,7 +44,7 @@ public class UserControllerTest {
 
     @Order(1)
     @Test
-    public void getClientsByExample_GetAll_Unauthenticated() throws Exception {
+    public void getClientsByExample_HasAccessWhenUnauthenticated_StatusForbidden() throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -53,7 +53,7 @@ public class UserControllerTest {
     @Order(2)
     @Test
     @WithMockUser(roles = "CLIENT")
-    public void getClientsByExample_GetAll_AuthenticatedAsClient() throws Exception {
+    public void getClientsByExample_HasAccessWhenAuthenticatedAsClient_StatusForbidden() throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -62,8 +62,9 @@ public class UserControllerTest {
     @Order(3)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/user/getClientsByExample_GetAll.csv", delimiter = ';')
-    public void getClientsByExample_GetAll_AuthenticatedAsEmployee(String responseBody) throws Exception {
+    @CsvFileSource(resources = "/user/getClientsByExample_GetAllClients.csv", delimiter = ';')
+    public void getClientsByExample_HasAccessWhenAuthenticatedAsEmployee_StatusOkAndCorrectResponseBodyReceived(
+            String responseBody) throws Exception {
         mockMvc.perform(get("/client")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -74,8 +75,9 @@ public class UserControllerTest {
     @Order(4)
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
-    @CsvFileSource(resources = "/user/getClientsByExample_GetByLastName.csv", delimiter = ';')
-    public void getClientsByExample_GetByLastName_AuthenticatedAsEmployee(String lastName, String responseBody) throws Exception {
+    @CsvFileSource(resources = "/user/getClientsByExample_GetClientsByLastName.csv", delimiter = ';')
+    public void getClientsByExample_GetClientsByLastName_StatusOkAndCorrectResponseBodyReceived(
+            String lastName, String responseBody) throws Exception {
         mockMvc.perform(get("/client?lastName={lastName}", lastName)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -85,7 +87,7 @@ public class UserControllerTest {
 
     @Order(5)
     @Test
-    public void getLoggedUser_Unauthenticated() throws Exception {
+    public void getLoggedUser_HasAccessWhenUnauthenticated_StatusForbidden() throws Exception {
         mockMvc.perform(get("/myaccount")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -95,7 +97,8 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/user/getLoggedUser_GetClient", delimiter = ';')
-    public void getLoggedUser_getClient_AuthenticatedAsClient(String responseBody) throws Exception {
+    public void getLoggedUser_HasAccessWhenAuthenticatedAsClient_StatusOkAndCorrectResponseBodyReceived(
+            String responseBody) throws Exception {
         mockMvc.perform(get("/myaccount")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -107,7 +110,8 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
     @CsvFileSource(resources = "/user/getLoggedUser_GetEmployee", delimiter = ';')
-    public void getLoggedUser_GetEmployee_AuthenticatedAsEmployee(String responseBody) throws Exception {
+    public void getLoggedUser_HasAccessWhenAuthenticatedAsEmployee_StatusOkAndCorrectResponseBodyReceived(
+            String responseBody) throws Exception {
         mockMvc.perform(get("/myaccount")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -118,7 +122,8 @@ public class UserControllerTest {
     @Order(8)
     @ParameterizedTest
     @CsvFileSource(resources = "/user/addClient.csv", delimiter = ';')
-    public void addClient_Unauthenticated(String requestBody, String responseBody) throws Exception {
+    public void addClient_HasAccessWhenUnauthenticated_StatusCreatedAndCorrectResponseBodyReceived(
+            String requestBody, String responseBody) throws Exception {
         mockMvc.perform(post("/signup")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -131,7 +136,8 @@ public class UserControllerTest {
     @Order(9)
     @ParameterizedTest
     @CsvFileSource(resources = "/user/addEmployee.csv", delimiter = ';')
-    public void addEmployee_Unauthenticated(String requestBody) throws Exception {
+    public void addEmployee_HasAccessWhenUnauthenticated_StatusForbidden(
+            String requestBody) throws Exception {
         mockMvc.perform(post("/register")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -143,7 +149,8 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "CLIENT")
     @CsvFileSource(resources = "/user/addEmployee.csv", delimiter = ';')
-    public void addEmployee_AuthenticatedAsClient(String requestBody) throws Exception {
+    public void addEmployee_HasAccessWhenAuthenticatedAsClient_StatusForbidden(
+            String requestBody) throws Exception {
         mockMvc.perform(post("/register")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +162,8 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(roles = "EMPLOYEE")
     @CsvFileSource(resources = "/user/addEmployee.csv", delimiter = ';')
-    public void addEmployee(String requestBody, String responseBody) throws Exception {
+    public void addEmployee_HasAccessWhenAuthenticatedAsEmployee_StatusCreatedAndCorrectResponseBodyReceived(
+            String requestBody, String responseBody) throws Exception {
         mockMvc.perform(post("/register")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -168,7 +176,8 @@ public class UserControllerTest {
     @Order(12)
     @ParameterizedTest
     @CsvFileSource(resources = "/user/updateUser_UpdateClient.csv", delimiter = ';')
-    public void updateUser_UpdateClient_Unauthenticated(String requestBody) throws Exception {
+    public void updateUser_HasAccessWhenUnauthenticated_StatusForbidden(
+            String requestBody) throws Exception {
         mockMvc.perform(put("/myaccount")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -180,7 +189,8 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/user/updateUser_UpdateClient.csv", delimiter = ';')
-    public void updateUser_UpdateClient_AuthenticatedAsClient(String requestBody, String responseBody) throws Exception {
+    public void updateUser_HasAccessWhenAuthenticatedAsClient_StatusOkAndCorrectResponseBodyReceived(
+            String requestBody, String responseBody) throws Exception {
         mockMvc.perform(put("/myaccount")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -194,7 +204,8 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "piotr.krakowski@kino.pl", roles = "EMPLOYEE")
     @CsvFileSource(resources = "/user/updateUser_UpdateEmployee.csv", delimiter = ';')
-    public void updateUser_UpdateEmployee_AuthenticatedAsEmployee(String requestBody, String responseBody) throws Exception {
+    public void updateUser_HasAccessWhenAuthenticatedAsEmployee_StatusOkAndCorrectResponseBodyReceived(
+            String requestBody, String responseBody) throws Exception {
         mockMvc.perform(put("/myaccount")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -208,7 +219,8 @@ public class UserControllerTest {
     @ParameterizedTest
     @WithMockUser(username = "filip.chmielewski@poczta.pl", roles = "CLIENT")
     @CsvFileSource(resources = "/user/updateUser_InappropriateUsername.csv", delimiter = ';')
-    public void updateUser_InappropriateUsername_AuthenticatedAsClient(String requestBody) throws Exception {
+    public void updateUser_InappropriateUsername_StatusBadRequest(
+            String requestBody) throws Exception {
         mockMvc.perform(put("/myaccount")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON)
