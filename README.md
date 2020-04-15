@@ -80,7 +80,24 @@ Alternatively, the setup can be changed in file `application.properties` in `src
 - allows to reserve tickets for the session via `POST` request
 - accessible only by `CLIENT`s
 
-Exemplary requests are available in `src/main/resources/CinemaReservationApp-2.0.0.json`. 
+Exemplary requests are available in `src/main/resources/CinemaReservationApp-2.5.3.json`. 
 The requests can be inquired by Postman. To test the app import the collection and run it.
 The requests inherit a security token automatically. 
 If you want to re-run tests, it is essential to re-run app (`CTLR` + `F5` in IntelliJ) in order to rebuild the database.
+
+### The app was build with
+
+* [Maven](https://maven.apache.org)
+* [Spring Boot](https://spring.io/projects/spring-boot)
+* [Spring Security](https://spring.io/projects/spring-security)
+* [Java JWT](https://github.com/auth0/java-jwt)
+* [PostgreSQL](https://www.postgresql.org/)
+* [Project Lombok](https://projectlombok.org/)
+* [JUnit Jupiter](https://junit.org/junit5)
+* [H2 Database](https://www.h2database.com/)
+
+### Developers
+
+* [Mirosław Buszek](https://github.com/MiroslawBuszek)
+* [Sebastian Kwaśniewski](https://github.com/kwachu2)
+* [Grzegorz Witkowski](https://github.com/GriszaKaramazow)
